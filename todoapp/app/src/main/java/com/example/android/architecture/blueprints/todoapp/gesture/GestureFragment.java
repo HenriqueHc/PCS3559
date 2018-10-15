@@ -16,6 +16,11 @@
 
 package com.example.android.architecture.blueprints.todoapp.gesture;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,16 +32,20 @@ import android.widget.TextView;
 
 import com.example.android.architecture.blueprints.todoapp.R;
 
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Main UI for the statistics screen.
  */
-public class GestureFragment extends Fragment implements GestureContract.View {
+public class GestureFragment extends Fragment implements GestureContract.View, SensorEventListener {
 
-    private TextView mStatisticsTV;
+    //private TextView mStatisticsTV;
 
     private GestureContract.Presenter mPresenter;
+
+    private TextView txtList;
 
     public static GestureFragment newInstance() {
         return new GestureFragment();
@@ -52,7 +61,12 @@ public class GestureFragment extends Fragment implements GestureContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gesture_interface_frag, container, false);
-        mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
+        //mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
+
+
+        txtList = (TextView)  root.findViewById(R.id.text_gesture);
+
+
         return root;
     }
 
@@ -60,36 +74,54 @@ public class GestureFragment extends Fragment implements GestureContract.View {
     public void onResume() {
         super.onResume();
         mPresenter.start();
+        List<Sensor> sensorList = ((GestureActivity)getActivity()).mgr.getSensorList(Sensor.TYPE_ALL);
+        StringBuilder strBuilder = new StringBuilder();
+        for(Sensor s: sensorList){
+            strBuilder.append(s.getName()+"\n");
+        }
+        txtList.setVisibility(View.VISIBLE);
+        txtList.setText(strBuilder);
     }
 
     @Override
     public void setProgressIndicator(boolean active) {
-        if (active) {
-            mStatisticsTV.setText(getString(R.string.loading));
-        } else {
-            mStatisticsTV.setText("");
-        }
+//        if (active) {
+//            mStatisticsTV.setText(getString(R.string.loading));
+//        } else {
+//            mStatisticsTV.setText("");
+//        }
     }
 
     @Override
     public void showStatistics(int numberOfIncompleteTasks, int numberOfCompletedTasks) {
-        if (numberOfCompletedTasks == 0 && numberOfIncompleteTasks == 0) {
-            mStatisticsTV.setText(getResources().getString(R.string.statistics_no_tasks));
-        } else {
-            String displayString = getResources().getString(R.string.statistics_active_tasks) + " "
-                    + numberOfIncompleteTasks + "\n" + getResources().getString(
-                    R.string.statistics_completed_tasks) + " " + numberOfCompletedTasks;
-            mStatisticsTV.setText(displayString);
-        }
+//        if (numberOfCompletedTasks == 0 && numberOfIncompleteTasks == 0) {
+//            mStatisticsTV.setText(getResources().getString(R.string.statistics_no_tasks));
+//        } else {
+//            String displayString = getResources().getString(R.string.statistics_active_tasks) + " "
+//                    + numberOfIncompleteTasks + "\n" + getResources().getString(
+//                    R.string.statistics_completed_tasks) + " " + numberOfCompletedTasks;
+//            mStatisticsTV.setText(displayString);
+//        }
     }
 
     @Override
     public void showLoadingStatisticsError() {
-        mStatisticsTV.setText(getResources().getString(R.string.statistics_error));
+//        mStatisticsTV.setText(getResources().getString(R.string.statistics_error));
     }
 
     @Override
     public boolean isActive() {
         return isAdded();
     }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
 }
