@@ -24,4 +24,22 @@
         android:id="@+id/statistics_navigation_menu_item"
         android:icon="@drawable/ic_statistics"
         android:title="@string/statistics_title" />
+
+    <item
+        android:id="@+id/gesture_navigation_menu_item"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/gesture_title" />
+
+    <item
+        android:id="@+id/image_navigation_menu_item"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/image_title" />
+    <item
+        android:id="@+id/running_navigation_menu_item"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/running_title" />
+    <item
+        android:id="@+id/voice_navigation_menu_item"
+        android:icon="@drawable/ic_statistics"
+        android:title="@string/voice_title" />
 </menu>

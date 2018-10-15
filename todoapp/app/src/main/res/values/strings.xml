@@ -36,6 +36,33 @@
     <string name="statistics_active_tasks">Active tasks:</string>
     <string name="statistics_completed_tasks">Completed tasks:</string>
     <string name="statistics_error">Error loading statistics.</string>
+
+    <string name="gesture_title">Controle por Gestos</string>
+    <string name="gesture_no_tasks">You have no tasks.</string>
+    <string name="gesture_active_tasks">Active tasks:</string>
+    <string name="gesture_completed_tasks">Completed tasks:</string>
+    <string name="gesture_error">Error loading statistics.</string>
+
+
+    <string name="voice_title">Recomendação por voz</string>
+    <string name="voice_no_tasks">You have no tasks.</string>
+    <string name="voice_active_tasks">Active tasks:</string>
+    <string name="voice_completed_tasks">Completed tasks:</string>
+    <string name="voice_error">Error loading statistics.</string>
+
+
+    <string name="running_title">Recomendação por corrida</string>
+    <string name="running_no_tasks">You have no tasks.</string>
+    <string name="running_active_tasks">Active tasks:</string>
+    <string name="running_completed_tasks">Completed tasks:</string>
+    <string name="running_error">Error loading statistics.</string>
+
+    <string name="image_title">Recomendação por imagem</string>
+    <string name="image_no_tasks">You have no tasks.</string>
+    <string name="image_active_tasks">Active tasks:</string>
+    <string name="image_completed_tasks">Completed tasks:</string>
+    <string name="image_error">Error loading statistics.</string>
+
     <string name="no_data">No data</string>
     <string name="loading">LOADING</string>
 

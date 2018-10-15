@@ -114,7 +114,7 @@ public class AppNavigationTest {
 
     @Test
     public void backFromTasksScreenAfterStats_ExitsApp() {
-        // This test checks that TasksActivity is a parent of StatisticsActivity
+        // This test checks that TasksActivity is a parent of GestureActivity
 
         // Open the stats screen
         openStatisticsScreen();

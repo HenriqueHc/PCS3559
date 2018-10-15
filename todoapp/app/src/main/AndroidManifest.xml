@@ -43,6 +43,42 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".tasks.TasksActivity" />
         </activity>
+        <activity
+            android:name="com.example.android.architecture.blueprints.todoapp.gesture.GestureActivity"
+            android:parentActivityName=".tasks.TasksActivity"
+            tools:ignore="UnusedAttribute">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tasks.TasksActivity" />
+        </activity>
+        <activity
+            android:name="com.example.android.architecture.blueprints.todoapp.image_sentiment.ImageSentimentActivity"
+            android:parentActivityName=".tasks.TasksActivity"
+            tools:ignore="UnusedAttribute">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tasks.TasksActivity" />
+        </activity>
+        <activity
+            android:name="com.example.android.architecture.blueprints.todoapp.running.RunningActivity"
+            android:parentActivityName=".tasks.TasksActivity"
+            tools:ignore="UnusedAttribute">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tasks.TasksActivity" />
+        </activity>
+        <activity
+            android:name="com.example.android.architecture.blueprints.todoapp.voice.VoiceActivity"
+            android:parentActivityName=".tasks.TasksActivity"
+            tools:ignore="UnusedAttribute">
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".tasks.TasksActivity" />
+        </activity>
     </application>
 
 </manifest>

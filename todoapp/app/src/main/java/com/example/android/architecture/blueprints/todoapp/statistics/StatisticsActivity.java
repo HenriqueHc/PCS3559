@@ -16,6 +16,7 @@
 
 package com.example.android.architecture.blueprints.todoapp.statistics;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
@@ -28,7 +29,11 @@ import android.view.MenuItem;
 
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.example.android.architecture.blueprints.todoapp.gesture.GestureActivity;
+import com.example.android.architecture.blueprints.todoapp.image_sentiment.ImageSentimentActivity;
+import com.example.android.architecture.blueprints.todoapp.running.RunningActivity;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
+import com.example.android.architecture.blueprints.todoapp.voice.VoiceActivity;
 
 /**
  * Show statistics for tasks.
@@ -87,12 +92,33 @@ public class StatisticsActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        Intent intent;
                         switch (menuItem.getItemId()) {
                             case R.id.list_navigation_menu_item:
                                 NavUtils.navigateUpFromSameTask(StatisticsActivity.this);
                                 break;
                             case R.id.statistics_navigation_menu_item:
                                 // Do nothing, we're already on that screen
+                                break;
+                            case R.id.gesture_navigation_menu_item:
+                                intent =
+                                        new Intent(StatisticsActivity.this, GestureActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.image_navigation_menu_item:
+                                intent =
+                                        new Intent(StatisticsActivity.this, ImageSentimentActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.running_navigation_menu_item:
+                                intent =
+                                        new Intent(StatisticsActivity.this, RunningActivity.class);
+                                startActivity(intent);
+                                break;
+                            case R.id.voice_navigation_menu_item:
+                                intent =
+                                        new Intent(StatisticsActivity.this, VoiceActivity.class);
+                                startActivity(intent);
                                 break;
                             default:
                                 break;

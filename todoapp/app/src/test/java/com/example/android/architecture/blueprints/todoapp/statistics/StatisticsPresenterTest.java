@@ -84,7 +84,7 @@ public class StatisticsPresenterTest {
 
     @Test
     public void loadEmptyTasksFromRepository_CallViewToDisplay() {
-        // Given an initialized StatisticsPresenter with no tasks
+        // Given an initialized GesturePresenter with no tasks
         TASKS.clear();
 
         // When loading of Tasks is requested
@@ -104,7 +104,7 @@ public class StatisticsPresenterTest {
 
     @Test
     public void loadNonEmptyTasksFromRepository_CallViewToDisplay() {
-        // Given an initialized StatisticsPresenter with 1 active and 2 completed tasks
+        // Given an initialized GesturePresenter with 1 active and 2 completed tasks
 
         // When loading of Tasks is requested
         mStatisticsPresenter.start();

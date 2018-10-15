@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright 2016, The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package com.example.android.architecture.blueprints.todoapp.tasks;
+package com.example.android.architecture.blueprints.todoapp.image_sentiment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
 import android.support.design.widget.NavigationView;
-import android.support.test.espresso.IdlingResource;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -31,30 +30,28 @@ import android.view.MenuItem;
 import com.example.android.architecture.blueprints.todoapp.Injection;
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.example.android.architecture.blueprints.todoapp.gesture.GestureActivity;
-import com.example.android.architecture.blueprints.todoapp.image_sentiment.ImageSentimentActivity;
 import com.example.android.architecture.blueprints.todoapp.running.RunningActivity;
-import com.example.android.architecture.blueprints.todoapp.statistics.StatisticsActivity;
 import com.example.android.architecture.blueprints.todoapp.util.ActivityUtils;
-import com.example.android.architecture.blueprints.todoapp.util.EspressoIdlingResource;
 import com.example.android.architecture.blueprints.todoapp.voice.VoiceActivity;
 
-public class TasksActivity extends AppCompatActivity {
-
-    private static final String CURRENT_FILTERING_KEY = "CURRENT_FILTERING_KEY";
+/**
+ * Show statistics for tasks.
+ */
+public class ImageSentimentActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-
-    private TasksPresenter mTasksPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.tasks_act);
+
+        setContentView(R.layout.image_sentiment_act);
 
         // Set up the toolbar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
+        ab.setTitle(R.string.image_title);
         ab.setHomeAsUpIndicator(R.drawable.ic_menu);
         ab.setDisplayHomeAsUpEnabled(true);
 
@@ -66,32 +63,16 @@ public class TasksActivity extends AppCompatActivity {
             setupDrawerContent(navigationView);
         }
 
-        TasksFragment tasksFragment =
-                (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (tasksFragment == null) {
-            // Create the fragment
-            tasksFragment = TasksFragment.newInstance();
-            ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), tasksFragment, R.id.contentFrame);
+        ImageSentimentFragment statisticsFragment = (ImageSentimentFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.contentFrame);
+        if (statisticsFragment == null) {
+            statisticsFragment = ImageSentimentFragment.newInstance();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    statisticsFragment, R.id.contentFrame);
         }
 
-        // Create the presenter
-        mTasksPresenter = new TasksPresenter(
-                Injection.provideTasksRepository(getApplicationContext()), tasksFragment);
-
-        // Load previously saved state, if available.
-        if (savedInstanceState != null) {
-            TasksFilterType currentFiltering =
-                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-            mTasksPresenter.setFiltering(currentFiltering);
-        }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable(CURRENT_FILTERING_KEY, mTasksPresenter.getFiltering());
-
-        super.onSaveInstanceState(outState);
+        new ImageSentimentPresenter(
+                Injection.provideTasksRepository(getApplicationContext()), statisticsFragment);
     }
 
     @Override
@@ -110,33 +91,32 @@ public class TasksActivity extends AppCompatActivity {
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        Intent intent;
                         switch (menuItem.getItemId()) {
                             case R.id.list_navigation_menu_item:
-                                // Do nothing, we're already on that screen
+                                NavUtils.navigateUpFromSameTask(ImageSentimentActivity.this);
                                 break;
                             case R.id.statistics_navigation_menu_item:
-                                Intent intent =
-                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-                                startActivity(intent);
+                                // Do nothing, we're already on that screen
                                 break;
                             case R.id.gesture_navigation_menu_item:
                                 intent =
-                                        new Intent(TasksActivity.this, GestureActivity.class);
+                                        new Intent(ImageSentimentActivity.this, GestureActivity.class);
                                 startActivity(intent);
                                 break;
                             case R.id.image_navigation_menu_item:
                                 intent =
-                                        new Intent(TasksActivity.this, ImageSentimentActivity.class);
+                                        new Intent(ImageSentimentActivity.this, ImageSentimentActivity.class);
                                 startActivity(intent);
                                 break;
                             case R.id.running_navigation_menu_item:
                                 intent =
-                                        new Intent(TasksActivity.this, RunningActivity.class);
+                                        new Intent(ImageSentimentActivity.this, RunningActivity.class);
                                 startActivity(intent);
                                 break;
                             case R.id.voice_navigation_menu_item:
                                 intent =
-                                        new Intent(TasksActivity.this, VoiceActivity.class);
+                                        new Intent(ImageSentimentActivity.this, VoiceActivity.class);
                                 startActivity(intent);
                                 break;
                             default:
@@ -148,10 +128,5 @@ public class TasksActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-    }
-
-    @VisibleForTesting
-    public IdlingResource getCountingIdlingResource() {
-        return EspressoIdlingResource.getIdlingResource();
     }
 }
