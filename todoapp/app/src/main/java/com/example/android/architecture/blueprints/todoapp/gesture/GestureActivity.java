@@ -19,8 +19,6 @@ package com.example.android.architecture.blueprints.todoapp.gesture;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -46,10 +44,8 @@ import java.util.List;
 /**
  * Show statistics for tasks.
  */
-public class GestureActivity extends AppCompatActivity implements SensorEventListener {
+public class GestureActivity extends AppCompatActivity {
 
-    public SensorManager mgr;
-    public Sensor sensor;
     private DrawerLayout mDrawerLayout;
 
     @Override
@@ -81,9 +77,6 @@ public class GestureActivity extends AppCompatActivity implements SensorEventLis
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
                     statisticsFragment, R.id.contentFrame);
         }
-
-        mgr = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        sensor = mgr.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         new GesturePresenter(
                 Injection.provideTasksRepository(getApplicationContext()), statisticsFragment);
@@ -145,19 +138,17 @@ public class GestureActivity extends AppCompatActivity implements SensorEventLis
                 });
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mgr.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        // Add the following line to register the Session Manager Listener onResume
+
+    }
+
+    @Override
+    public void onPause() {
+        // Add the following line to unregister the Sensor Manager onPause
+        super.onPause();
     }
 }

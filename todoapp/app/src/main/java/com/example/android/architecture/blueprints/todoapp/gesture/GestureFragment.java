@@ -39,13 +39,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Main UI for the statistics screen.
  */
-public class GestureFragment extends Fragment implements GestureContract.View, SensorEventListener {
+public class GestureFragment extends Fragment implements GestureContract.View {
 
     //private TextView mStatisticsTV;
 
     private GestureContract.Presenter mPresenter;
 
     private TextView txtList;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private ShakeDetector mShakeDetector;
+
 
     public static GestureFragment newInstance() {
         return new GestureFragment();
@@ -67,6 +72,27 @@ public class GestureFragment extends Fragment implements GestureContract.View, S
         txtList = (TextView)  root.findViewById(R.id.text_gesture);
 
 
+        // ShakeDetector initialization
+        mSensorManager = (SensorManager) (getActivity()).getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mShakeDetector = new ShakeDetector();
+        mShakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+            @Override
+            public void onShake(int count) {
+                /*
+                 * The following method, "handleShakeEvent(count):" is a stub //
+                 * method you would use to setup whatever you want done once the
+                 * device has been shook.
+                 */
+                txtList.setText("Mexeu!!!");
+            }
+        });
+
+
+        txtList.setText("Hello World!");
+
         return root;
     }
 
@@ -74,14 +100,10 @@ public class GestureFragment extends Fragment implements GestureContract.View, S
     public void onResume() {
         super.onResume();
         mPresenter.start();
-        List<Sensor> sensorList = ((GestureActivity)getActivity()).mgr.getSensorList(Sensor.TYPE_ALL);
-        StringBuilder strBuilder = new StringBuilder();
-        for(Sensor s: sensorList){
-            strBuilder.append(s.getName()+"\n");
-        }
+        mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
         txtList.setVisibility(View.VISIBLE);
-        txtList.setText(strBuilder);
     }
+
 
     @Override
     public void setProgressIndicator(boolean active) {
@@ -114,14 +136,6 @@ public class GestureFragment extends Fragment implements GestureContract.View, S
         return isAdded();
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
 
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 
 }
