@@ -27,7 +27,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/logo" />
+        android:src="@drawable/baseline_music_video_black_48" />
 
     <TextView
         android:layout_width="wrap_content"

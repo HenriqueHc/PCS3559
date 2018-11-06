@@ -114,13 +114,8 @@ public class TasksActivity extends AppCompatActivity {
                             case R.id.list_navigation_menu_item:
                                 // Do nothing, we're already on that screen
                                 break;
-                            case R.id.statistics_navigation_menu_item:
-                                Intent intent =
-                                        new Intent(TasksActivity.this, StatisticsActivity.class);
-                                startActivity(intent);
-                                break;
                             case R.id.gesture_navigation_menu_item:
-                                intent =
+                                Intent intent =
                                         new Intent(TasksActivity.this, GestureActivity.class);
                                 startActivity(intent);
                                 break;

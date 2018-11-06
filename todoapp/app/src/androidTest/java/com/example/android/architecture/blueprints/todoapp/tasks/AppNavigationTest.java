@@ -153,7 +153,7 @@ public class AppNavigationTest {
                 .perform(open()); // Open Drawer
 
         // Start statistics screen.
-        onView(withId(R.id.nav_view))
-                .perform(navigateTo(R.id.statistics_navigation_menu_item));
+//        onView(withId(R.id.nav_view))
+//                .perform(navigateTo(R.id.statistics_navigation_menu_item));
     }
 }

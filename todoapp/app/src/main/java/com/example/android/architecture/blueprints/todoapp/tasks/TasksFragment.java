@@ -124,17 +124,6 @@ public class TasksFragment extends Fragment implements TasksContract.View {
             }
         });
 
-        // Set up floating action button
-        FloatingActionButton fab =
-                (FloatingActionButton) getActivity().findViewById(R.id.fab_add_task);
-
-        fab.setImageResource(R.drawable.ic_add);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.addNewTask();
-            }
-        });
 
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
@@ -264,8 +253,8 @@ public class TasksFragment extends Fragment implements TasksContract.View {
     @Override
     public void showNoTasks() {
         showNoTasksViews(
-                getResources().getString(R.string.no_tasks_all),
-                R.drawable.ic_assignment_turned_in_24dp,
+                getResources().getString(R.string.app_description),
+                R.drawable.baseline_music_video_black_48,
                 false
         );
     }

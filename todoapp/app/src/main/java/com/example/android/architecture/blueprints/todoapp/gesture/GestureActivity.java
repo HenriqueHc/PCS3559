@@ -103,9 +103,6 @@ public class GestureActivity extends AppCompatActivity {
                             case R.id.list_navigation_menu_item:
                                 NavUtils.navigateUpFromSameTask(GestureActivity.this);
                                 break;
-                            case R.id.statistics_navigation_menu_item:
-                                // Do nothing, we're already on that screen
-                                break;
 
                             case R.id.gesture_navigation_menu_item:
                                 intent =
