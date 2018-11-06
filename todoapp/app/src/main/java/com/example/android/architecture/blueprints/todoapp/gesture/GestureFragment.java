@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.android.architecture.blueprints.todoapp.R;
+import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -47,6 +48,9 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
     private TextView txtList;
 
+    private int contador = 0;
+
+    private final List<String> LISTA_MUSICAS = Lists.newArrayList("Música 1", "Música 2", "Música 3", "Música 4", "Música 5", "Música 6", "Música 7", "Música 8", "Música 9");
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
@@ -86,12 +90,14 @@ public class GestureFragment extends Fragment implements GestureContract.View {
                  * method you would use to setup whatever you want done once the
                  * device has been shook.
                  */
-                txtList.setText("Mexeu!!!");
+                contador++;
+                if (contador > 8) contador = 0;
+                txtList.setText(LISTA_MUSICAS.get(contador));
             }
         });
 
 
-        txtList.setText("Hello World!");
+        txtList.setText(LISTA_MUSICAS.get(contador));
 
         return root;
     }
