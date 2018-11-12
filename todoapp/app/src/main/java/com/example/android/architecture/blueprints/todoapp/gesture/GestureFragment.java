@@ -22,6 +22,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.VibrationEffect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.os.Vibrator;
+import android.os.Build;
 
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.google.common.collect.Lists;
@@ -72,7 +75,6 @@ public class GestureFragment extends Fragment implements GestureContract.View {
         View root = inflater.inflate(R.layout.gesture_interface_frag, container, false);
         //mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
 
-
         txtList = (TextView)  root.findViewById(R.id.text_gesture);
 
 
@@ -93,6 +95,14 @@ public class GestureFragment extends Fragment implements GestureContract.View {
                 contador++;
                 if (contador > 8) contador = 0;
                 txtList.setText(LISTA_MUSICAS.get(contador));
+
+                Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+
+                //deprecated in API 26
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                else vibrator.vibrate(500);
+
             }
         });
 
