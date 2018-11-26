@@ -23,9 +23,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.android.architecture.blueprints.todoapp.R;
+
+import java.util.Formatter;
+import java.util.Locale;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -34,7 +39,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class RunningFragment extends Fragment implements RunningContract.View {
 
-    private TextView mStatisticsTV;
+    CheckBox chkUseMetricUntis;
+    TextView txtCurrentSpeed;
+
 
     private RunningContract.Presenter mPresenter;
 
@@ -52,9 +59,50 @@ public class RunningFragment extends Fragment implements RunningContract.View {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.running_interface_frag, container, false);
-        mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
+        chkUseMetricUntis = (CheckBox) root.findViewById(R.id.chkMetricUnits);
+        txtCurrentSpeed = (TextView) root.findViewById(R.id.txtCurrentSpeed);
+        chkUseMetricUntis.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // TODO Auto-generated method stub
+                updateSpeed(null);
+            }
+        });
         return root;
     }
+
+    public void updateSpeed(CLocation location) {
+        // TODO Auto-generated method stub
+        float nCurrentSpeed = 0;
+
+        if(location != null)
+        {
+            location.setUseMetricunits(this.useMetricUnits());
+            nCurrentSpeed = location.getSpeed();
+        }
+
+        Formatter fmt = new Formatter(new StringBuilder());
+        fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
+        String strCurrentSpeed = fmt.toString();
+        strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
+
+        String strUnits = "miles/hour";
+        if(this.useMetricUnits())
+        {
+            strUnits = "meters/second";
+        }
+
+
+        txtCurrentSpeed.setText(strCurrentSpeed + " " + strUnits);
+    }
+
+
+    public boolean useMetricUnits() {
+        // TODO Auto-generated method stub
+        return this.chkUseMetricUntis.isChecked();
+    }
+
 
     @Override
     public void onResume() {
@@ -64,28 +112,16 @@ public class RunningFragment extends Fragment implements RunningContract.View {
 
     @Override
     public void setProgressIndicator(boolean active) {
-        if (active) {
-            mStatisticsTV.setText(getString(R.string.loading));
-        } else {
-            mStatisticsTV.setText("");
-        }
+
     }
 
     @Override
     public void showStatistics(int numberOfIncompleteTasks, int numberOfCompletedTasks) {
-        if (numberOfCompletedTasks == 0 && numberOfIncompleteTasks == 0) {
-            mStatisticsTV.setText(getResources().getString(R.string.statistics_no_tasks));
-        } else {
-            String displayString = getResources().getString(R.string.statistics_active_tasks) + " "
-                    + numberOfIncompleteTasks + "\n" + getResources().getString(
-                    R.string.statistics_completed_tasks) + " " + numberOfCompletedTasks;
-            mStatisticsTV.setText(displayString);
-        }
+
     }
 
     @Override
     public void showLoadingStatisticsError() {
-        mStatisticsTV.setText(getResources().getString(R.string.statistics_error));
     }
 
     @Override
