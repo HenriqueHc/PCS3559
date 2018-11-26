@@ -1,6 +1,7 @@
 package com.codility.speechtext
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
@@ -19,11 +20,19 @@ import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import android.content.Context.AUDIO_SERVICE
+import android.media.AudioManager
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mp: MediaPlayer
     private var position = 0
+
+    val play = arrayOf("play", "Play", "tocar", "Tocar", "vai", "toca")
+    val pause = arrayOf("pause", "Pause", "parar", "Parar", "para", "chega")
+    val volume_up = arrayOf("aumenta", "alto", "mais", "aumentar", "cima", "gritar", "auto")
+    val volume_down = arrayOf("diminui", "baixo", "menos", "diminuir", "sussuro", "abaixa")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +42,9 @@ class MainActivity : AppCompatActivity() {
 
         startSpeechToText()
 
-        mp = MediaPlayer.create (this, R.raw.coldplay)
+        mp = MediaPlayer.create(this, R.raw.coldplay)
         position = 0
+
     }
 
     private fun startSpeechToText() {
@@ -64,17 +74,31 @@ class MainActivity : AppCompatActivity() {
                 //displaying the first match
                 if (matches != null)
                     editText.setText(matches[0])
-                    if (matches[0].equals("play", ignoreCase = true) || matches[0].equals("tocar", ignoreCase = true)){
-                        if (mp.isPlaying () == false) {
-                            mp.seekTo (position)
-                            mp.start ()
-                        }
-                    } else if (matches[0].equals("pause", ignoreCase = true) || matches[0].equals("parar", ignoreCase = true)){
-                        if (mp.isPlaying ()) {
-                            position = mp.getCurrentPosition ()
-                            mp.pause ()
-                        }
+                if (matches[0] in play) {
+                    if (mp.isPlaying() == false) {
+                        mp.seekTo(position)
+                        mp.start()
+                        Toast.makeText(applicationContext, "Play", Toast.LENGTH_LONG).show()
                     }
+                } else if (matches[0] in pause) {
+                    if (mp.isPlaying()) {
+                        position = mp.getCurrentPosition()
+                        mp.pause()
+                        Toast.makeText(applicationContext, "Pause", Toast.LENGTH_LONG).show()
+                    }
+                } else if (matches[0] in volume_up) {
+                    val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
+                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
+                    Toast.makeText(applicationContext, "Volume up", Toast.LENGTH_LONG).show()
+                } else if (matches[0] in volume_down) {
+                    val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
+                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
+                    Toast.makeText(applicationContext, "Volume down", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(applicationContext, "Nenhum comando reconhecido", Toast.LENGTH_LONG).show()
+                }
             }
 
             override fun onPartialResults(bundle: Bundle) {}
@@ -105,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + packageName))
                 startActivity(intent)
                 finish()
-                Toast.makeText(this, "Enable Microphone Permission..!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Ative a permissão para usar o microfone!", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Controle de Voz</string>
     <string name="applicant_name">PCS3559</string>
-    <string name="text_hint">O texto reconhecido irá aparecer aqui.</string>
+    <string name="text_hint">O texto aparecerá aqui.</string>
     <string name="btn_info">Segure para falar...</string>
-    <string name="app_info">Teste para a matéria de Aplicações Interativas.</string>
+    <string name="app_info">POC para a matéria de Aplicações Interativas.</string>
 </resources>
