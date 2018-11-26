@@ -319,7 +319,7 @@ public class MainActivity extends AppCompatActivity {
         List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
         if (labels != null) {
             for (EntityAnnotation label : labels) {
-                message.append(String.format(Locale.US, "%s (%.1f)", label.getDescription(), label.getScore()));
+                message.append(String.format(Locale.US, "%s (%.2f)", label.getDescription(), label.getScore()));
                 message.append("\n");
             }
         } else {
