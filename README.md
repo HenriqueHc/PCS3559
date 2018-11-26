@@ -1,0 +1,1 @@
+Funcionalidades de comandos de voz
