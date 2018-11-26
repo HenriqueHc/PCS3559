@@ -50,6 +50,7 @@
         <activity
             android:name="com.example.android.architecture.blueprints.todoapp.gesture.GestureActivity"
             android:parentActivityName=".tasks.TasksActivity"
+            android:launchMode="singleInstance"
             tools:ignore="UnusedAttribute">
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data

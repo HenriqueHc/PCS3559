@@ -17,6 +17,9 @@
 package com.example.android.architecture.blueprints.todoapp.gesture;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,6 +34,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.os.Vibrator;
 import android.os.Build;
@@ -55,6 +59,7 @@ public class GestureFragment extends Fragment implements GestureContract.View {
     MediaPlayer mediaPlayer;
 
     private TextView txtList;
+    private ImageView coverart;
 
     private String sponsorTitle;
     private String sponsorArtist;
@@ -87,6 +92,7 @@ public class GestureFragment extends Fragment implements GestureContract.View {
         //mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
 
         txtList = (TextView)  root.findViewById(R.id.text_gesture);
+        coverart = (ImageView) root.findViewById(R.id.imagem_gesto);
 
 
         // ShakeDetector initialization
@@ -115,6 +121,25 @@ public class GestureFragment extends Fragment implements GestureContract.View {
                 sponsorTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
                 sponsorArtist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
 
+                byte [] data = mmr.getEmbeddedPicture();
+                //coverart is an Imageview object
+
+                // convert the byte array to a bitmap
+                if(data != null)
+                {
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+                    coverart.setImageBitmap(bitmap); //associated cover art in bitmap
+                    coverart.setColorFilter(Color.argb(0, 255, 255, 255));
+                    coverart.setAdjustViewBounds(true);
+                }
+                else
+                {
+                    coverart.setImageResource(R.drawable.ic_statistics_100dp); //any default cover resourse folder
+                    coverart.setColorFilter(Color.argb(255, 255, 255, 255));
+                    coverart.setAdjustViewBounds(true);
+                }
+
+
                 mediaPlayer.reset();
                 mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), resID[contador]);
                 mediaPlayer.start();
@@ -138,6 +163,22 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
         sponsorTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
         sponsorArtist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+
+        byte [] data = mmr.getEmbeddedPicture();
+        //coverart is an Imageview object
+
+        // convert the byte array to a bitmap
+        if(data != null)
+        {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+            coverart.setImageBitmap(bitmap); //associated cover art in bitmap
+            coverart.setAdjustViewBounds(true);
+        }
+        else
+        {
+            coverart.setImageResource(R.drawable.ic_statistics_100dp); //any default cover resourse folder
+            coverart.setAdjustViewBounds(true);
+        }
 
         mediaPlayer.start();
 
