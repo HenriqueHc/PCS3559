@@ -105,10 +105,6 @@ public class RunningActivity extends AppCompatActivity implements IBaseGpsListen
                         LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
                         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
                         statisticsFragment.updateSpeed(null);
-
-
-                        Toast.makeText(this, "EBA!!!!!", Toast.LENGTH_LONG).show();
-
                     }
 
                     Toast.makeText(this, "OPA1", Toast.LENGTH_LONG).show();
@@ -205,8 +201,9 @@ public class RunningActivity extends AppCompatActivity implements IBaseGpsListen
 
         double speed = location.hasSpeed() ? location.getSpeed() : calculatedSpeed;
 
-        Toast.makeText(this, String.valueOf(speed * 3.6), Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, String.valueOf(speed * 3.6), Toast.LENGTH_LONG).show();
 
+        statisticsFragment.updateSpeed(String.valueOf(Math.round(speed * 3.6)));
         /* There you have it, a speed value in m/s */
 
 

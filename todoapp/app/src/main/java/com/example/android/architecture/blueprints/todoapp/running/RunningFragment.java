@@ -42,6 +42,9 @@ public class RunningFragment extends Fragment implements RunningContract.View {
     CheckBox chkUseMetricUntis;
     TextView txtCurrentSpeed;
 
+    CheckBox chkSimulacao;
+    TextView textSpeed;
+
 
     private RunningContract.Presenter mPresenter;
 
@@ -69,32 +72,39 @@ public class RunningFragment extends Fragment implements RunningContract.View {
                 updateSpeed(null);
             }
         });
+
+
+        textSpeed = (TextView) root.findViewById(R.id.textSpeed);
+        chkSimulacao = (CheckBox) root.findViewById(R.id.chkSimulacao);
+        textSpeed.setText("0");
+
         return root;
     }
 
-    public void updateSpeed(CLocation location) {
+    public void updateSpeed(String speed) {
         // TODO Auto-generated method stub
-        float nCurrentSpeed = 0;
+//        float nCurrentSpeed = 0;
+//
+//        if(location != null)
+//        {
+//            location.setUseMetricunits(this.useMetricUnits());
+//            nCurrentSpeed = location.getSpeed();
+//        }
+//
+//        Formatter fmt = new Formatter(new StringBuilder());
+//        fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
+//        String strCurrentSpeed = fmt.toString();
+//        strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
 
-        if(location != null)
-        {
-            location.setUseMetricunits(this.useMetricUnits());
-            nCurrentSpeed = location.getSpeed();
-        }
-
-        Formatter fmt = new Formatter(new StringBuilder());
-        fmt.format(Locale.US, "%5.1f", nCurrentSpeed);
-        String strCurrentSpeed = fmt.toString();
-        strCurrentSpeed = strCurrentSpeed.replace(' ', '0');
-
-        String strUnits = "miles/hour";
-        if(this.useMetricUnits())
-        {
-            strUnits = "meters/second";
-        }
+//        String strUnits = "miles/hour";
+//        if(this.useMetricUnits())
+//        {
+//            strUnits = "meters/second";
+//        }
+//        txtCurrentSpeed.setText(strCurrentSpeed + " " + strUnits);
 
 
-        txtCurrentSpeed.setText(strCurrentSpeed + " " + strUnits);
+        textSpeed.setText(speed);
     }
 
 
