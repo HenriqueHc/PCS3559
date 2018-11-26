@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.os.Vibrator;
 import android.os.Build;
+import android.media.MediaPlayer;
 
 import com.example.android.architecture.blueprints.todoapp.R;
 import com.google.common.collect.Lists;
@@ -49,14 +50,20 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
     private GestureContract.Presenter mPresenter;
 
+    MediaPlayer mediaPlayer;
+
     private TextView txtList;
 
     private int contador = 0;
+
+    private final int[] resID = { R.raw.gaiola, R.raw.atrasadinha, R.raw.youngr,
+            R.raw.medicina, R.raw.amor_falso, R.raw.fuleragem, R.raw.taki_taki, R.raw.refem };
 
     private final List<String> LISTA_MUSICAS = Lists.newArrayList("Música 1", "Música 2", "Música 3", "Música 4", "Música 5", "Música 6", "Música 7", "Música 8", "Música 9");
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+
 
 
     public static GestureFragment newInstance() {
@@ -70,7 +77,7 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.gesture_interface_frag, container, false);
         //mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
@@ -93,7 +100,13 @@ public class GestureFragment extends Fragment implements GestureContract.View {
                  * device has been shook.
                  */
                 contador++;
-                if (contador > 8) contador = 0;
+                if (contador == resID.length){
+                    contador = 0;
+                }
+
+                mediaPlayer.reset();
+                mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), resID[contador]);
+                mediaPlayer.start();
                 txtList.setText(LISTA_MUSICAS.get(contador));
 
                 Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
@@ -105,6 +118,10 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
             }
         });
+
+        mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.gaiola);
+
+        mediaPlayer.start();
 
 
         txtList.setText(LISTA_MUSICAS.get(contador));
