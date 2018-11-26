@@ -28,11 +28,78 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="000.0 miles/hour"
+        android:visibility="gone"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <CheckBox android:id="@+id/chkMetricUnits"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:text="Use metric units?"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Velocidades média para simulação de corrida"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+
+    <Button
+        android:id="@+id/id1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="1 a 3 km/h"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/id2"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="3 a 5 km/h"
+        android:layout_marginTop="20dp"/>
+
+    <Button
+        android:id="@+id/id3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="5 a 7 km/h"
+        android:layout_marginTop="20dp"/>
+
+
+    <Button
+        android:id="@+id/id4"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="10dp"
+        android:text="mais de 7 km/h"
+        android:layout_marginTop="20dp"/>
+
+    <CheckBox android:id="@+id/chkSimulacao"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:text="Desativar modo de simulação"/>
+
+
+    <TextView
+        android:id="@+id/textSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="7,5"
+        android:textSize="60dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="km/h"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>
