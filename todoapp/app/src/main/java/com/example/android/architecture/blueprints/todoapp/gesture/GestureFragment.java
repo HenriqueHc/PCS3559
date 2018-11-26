@@ -21,6 +21,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.support.annotation.NonNull;
@@ -54,12 +56,14 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
     private TextView txtList;
 
+    private String sponsorTitle;
+    private String sponsorArtist;
+
     private int contador = 0;
 
     private final int[] resID = { R.raw.gaiola, R.raw.atrasadinha, R.raw.youngr,
             R.raw.medicina, R.raw.amor_falso, R.raw.fuleragem, R.raw.taki_taki, R.raw.refem };
 
-    private final List<String> LISTA_MUSICAS = Lists.newArrayList("Música 1", "Música 2", "Música 3", "Música 4", "Música 5", "Música 6", "Música 7", "Música 8", "Música 9");
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
@@ -104,10 +108,17 @@ public class GestureFragment extends Fragment implements GestureContract.View {
                     contador = 0;
                 }
 
+                Uri mediaPath = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + resID[contador]);
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(getActivity(), mediaPath);
+
+                sponsorTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+                sponsorArtist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+
                 mediaPlayer.reset();
                 mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), resID[contador]);
                 mediaPlayer.start();
-                txtList.setText(LISTA_MUSICAS.get(contador));
+                txtList.setText(sponsorTitle + " - " + sponsorArtist);
 
                 Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -119,12 +130,19 @@ public class GestureFragment extends Fragment implements GestureContract.View {
             }
         });
 
-        mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.gaiola);
+        mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), resID[contador]);
+
+        Uri mediaPath = Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + resID[contador]);
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        mmr.setDataSource(getActivity(), mediaPath);
+
+        sponsorTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+        sponsorArtist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
 
         mediaPlayer.start();
 
 
-        txtList.setText(LISTA_MUSICAS.get(contador));
+        txtList.setText(sponsorTitle + " - " + sponsorArtist);
 
         return root;
     }
