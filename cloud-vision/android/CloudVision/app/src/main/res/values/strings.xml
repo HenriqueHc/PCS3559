@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Imagefy</string>
+    <string name="action_settings">Configurações</string>
+    <string name="image_details_header">Detalhes:</string>
+    <string name="image_preview_header">Preview:</string>
+    <string name="loading_message">Carregando imagem. Por favor aguarde.</string>
+
+    <string name="dialog_select_prompt">Escolha uma imagem</string>
+    <string name="dialog_select_camera">Camera</string>
+    <string name="dialog_select_gallery">Galeria</string>
+
+    <string name="image_picker_error">Algo deu errado com sua imagem! Por favor escolha outra.</string>
+</resources>
