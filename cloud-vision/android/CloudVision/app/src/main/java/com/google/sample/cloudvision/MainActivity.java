@@ -34,6 +34,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.SearchManager;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -49,6 +50,7 @@ import com.google.api.services.vision.v1.model.BatchAnnotateImagesResponse;
 import com.google.api.services.vision.v1.model.EntityAnnotation;
 import com.google.api.services.vision.v1.model.Feature;
 import com.google.api.services.vision.v1.model.Image;
+import com.google.api.services.vision.v1.model.WebEntity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             // add the features we want
             annotateImageRequest.setFeatures(new ArrayList<Feature>() {{
                 Feature labelDetection = new Feature();
-                labelDetection.setType("LABEL_DETECTION");
+                labelDetection.setType("WEB_DETECTION");
                 labelDetection.setMaxResults(MAX_LABEL_RESULTS);
                 add(labelDetection);
             }});
@@ -245,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         return annotateRequest;
     }
 
-    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
+    private class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<MainActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
 
@@ -313,19 +315,25 @@ public class MainActivity extends AppCompatActivity {
         return Bitmap.createScaledBitmap(bitmap, resizedWidth, resizedHeight, false);
     }
 
-    private static String convertResponseToString(BatchAnnotateImagesResponse response) {
-        StringBuilder message = new StringBuilder("Procurarei músicas com as seguintes palavras:\n\n");
+    private String convertResponseToString(BatchAnnotateImagesResponse response) {
+        StringBuilder message = new StringBuilder("Procurarei músicas, aguarde");
 
-        List<EntityAnnotation> labels = response.getResponses().get(0).getLabelAnnotations();
+        List<WebEntity> labels = response.getResponses().get(0).getWebDetection().getWebEntities();
         if (labels != null) {
-            for (EntityAnnotation label : labels) {
-                message.append(String.format(Locale.US, "%s (%.2f)", label.getDescription(), label.getScore()));
-                message.append("\n");
-            }
+            //for (EntityAnnotation label : labels) {
+            //    message.append(String.format(Locale.US, "%s (%.2f)", label.getDescription(), label.getScore()));
+            //    message.append("\n");
+            //}
+                        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+            String musicSearch = labels.get(0).getDescription() + " music";
+            intent.putExtra(SearchManager.QUERY, musicSearch);
+            startActivity(intent);
+            finish();
         } else {
             message.append("Nada.");
         }
 
         return message.toString();
     }
+
 }
