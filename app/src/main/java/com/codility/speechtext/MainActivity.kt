@@ -21,18 +21,25 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import android.content.Context.AUDIO_SERVICE
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.media.AudioManager
+import android.media.MediaMetadataRetriever
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var mp: MediaPlayer
     private var position = 0
+    private var contador = 0
 
     val play = arrayOf("play", "Play", "tocar", "Tocar", "vai", "toca")
-    val pause = arrayOf("pause", "Pause", "parar", "Parar", "para", "chega")
+    val pause = arrayOf("pause", "Pause", "parar", "Parar", "para", "chega", "stop")
     val volume_up = arrayOf("aumenta", "alto", "mais", "aumentar", "cima", "gritar", "auto")
     val volume_down = arrayOf("diminui", "baixo", "menos", "diminuir", "sussuro", "abaixa")
+    val next = arrayOf("proxima", "próxima", "proxima_musica","next")
+    val previous = arrayOf("anterior", "previous")
+    val musicas_id = arrayListOf<Int>(R.raw.coldplay, R.raw.parado, R.raw.atrasadinha, R.raw.amor_falso, R.raw.gaiola)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         mp = MediaPlayer.create(this, R.raw.coldplay)
         position = 0
+        contador = 0
 
     }
 
@@ -96,6 +104,34 @@ class MainActivity : AppCompatActivity() {
                     audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
                     audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
                     Toast.makeText(applicationContext, "Volume down", Toast.LENGTH_LONG).show()
+                } else if (matches[0] in next) {
+                    contador++
+                    if (contador == musicas_id.size){
+                        contador = 0
+                    }
+                    Toast.makeText(applicationContext, contador.toString(), Toast.LENGTH_LONG).show()
+                    val mediaPath = Uri.parse("android.resource://" + packageName + "/" + musicas_id[contador])
+                    val mmr = MediaMetadataRetriever()
+                    mmr.setDataSource(applicationContext, mediaPath)
+                    val title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+                    val artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+
+                    val image_array = mmr.embeddedPicture
+                    if (image_array != null){
+                        val imagem_bit = BitmapFactory.decodeByteArray(image_array, 0, image_array.size)
+                        capa_musica.setImageBitmap(imagem_bit)
+                        capa_musica.setColorFilter(Color.argb(0,255,255,255))
+                        capa_musica.adjustViewBounds = true
+                    } else {
+                        //capa_musica.setImageResource(R.id.an)
+                    }
+                    mp.reset()
+                    mp = MediaPlayer.create(this@MainActivity, musicas_id[contador])
+                    mp.seekTo(0)
+                    mp.start()
+                    nome_musica.setText(title + " - " + artist)
+
+                    Toast.makeText(applicationContext, "Next", Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(applicationContext, "Nenhum comando reconhecido", Toast.LENGTH_LONG).show()
                 }
