@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
     val pause = arrayOf("pause", "Pause", "parar", "Parar", "para", "chega", "stop")
     val volume_up = arrayOf("aumenta", "alto", "mais", "aumentar", "cima", "gritar", "auto")
     val volume_down = arrayOf("diminui", "baixo", "menos", "diminuir", "sussuro", "abaixa")
-    val next = arrayOf("proxima", "próxima", "proxima_musica","next")
+    val next = arrayOf("proxima", "próxima", "proxima_musica", "next", "passa")
     val previous = arrayOf("anterior", "previous")
     val musicas_id = arrayListOf<Int>(R.raw.coldplay, R.raw.parado, R.raw.atrasadinha, R.raw.amor_falso, R.raw.gaiola)
 
@@ -49,14 +49,30 @@ class MainActivity : AppCompatActivity() {
 
         startSpeechToText()
 
-        mp = MediaPlayer.create(this, R.raw.coldplay)
         position = 0
         contador = 0
 
+        val mediaPath = Uri.parse("android.resource://" + packageName + "/" + musicas_id[contador])
+        val mmr = MediaMetadataRetriever()
+        mmr.setDataSource(applicationContext, mediaPath)
+        val title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+        val artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+
+        val image_array = mmr.embeddedPicture
+        if (image_array != null) {
+            val imagem_bit = BitmapFactory.decodeByteArray(image_array, 0, image_array.size)
+            capa_musica.setImageBitmap(imagem_bit)
+            capa_musica.setColorFilter(Color.argb(0, 255, 255, 255))
+            capa_musica.adjustViewBounds = true
+        } else {
+            //capa_musica.setImageResource(R.id.an)
+        }
+        mp = MediaPlayer.create(this, musicas_id[contador])
+        nome_musica.setText(title + " - " + artist)
     }
 
     private fun startSpeechToText() {
-        val editText = findViewById<EditText>(R.id.editText)
+        //val editText = findViewById<EditText>(R.id.editText)
 
         val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this)
         val speechRecognizerIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
@@ -80,60 +96,61 @@ class MainActivity : AppCompatActivity() {
             override fun onResults(bundle: Bundle) {
                 val matches = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)//getting all the matches
                 //displaying the first match
-                if (matches != null)
-                    editText.setText(matches[0])
-                if (matches[0] in play) {
-                    if (mp.isPlaying() == false) {
-                        mp.seekTo(position)
+                if (matches != null) {
+
+                    if (matches[0] in play) {
+                        if (mp.isPlaying() == false) {
+                            mp.seekTo(position)
+                            mp.start()
+                            Toast.makeText(applicationContext, "Play", Toast.LENGTH_LONG).show()
+                        }
+                    } else if (matches[0] in pause) {
+                        if (mp.isPlaying()) {
+                            position = mp.getCurrentPosition()
+                            mp.pause()
+                            Toast.makeText(applicationContext, "Pause", Toast.LENGTH_LONG).show()
+                        }
+                    } else if (matches[0] in volume_up) {
+                        val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                        audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
+                        audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
+                        Toast.makeText(applicationContext, "Volume up", Toast.LENGTH_LONG).show()
+                    } else if (matches[0] in volume_down) {
+                        val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                        audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
+                        audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
+                        Toast.makeText(applicationContext, "Volume down", Toast.LENGTH_LONG).show()
+                    } else if (matches[0] in next) {
+                        contador++
+                        if (contador == musicas_id.size) {
+                            contador = 0
+                        }
+                        Toast.makeText(applicationContext, "Música: "+ contador.toString(), Toast.LENGTH_LONG).show()
+                        val mediaPath = Uri.parse("android.resource://" + packageName + "/" + musicas_id[contador])
+                        val mmr = MediaMetadataRetriever()
+                        mmr.setDataSource(applicationContext, mediaPath)
+                        val title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
+                        val artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+
+                        val image_array = mmr.embeddedPicture
+                        if (image_array != null) {
+                            val imagem_bit = BitmapFactory.decodeByteArray(image_array, 0, image_array.size)
+                            capa_musica.setImageBitmap(imagem_bit)
+                            capa_musica.setColorFilter(Color.argb(0, 255, 255, 255))
+                            capa_musica.adjustViewBounds = true
+                        } else {
+                            //capa_musica.setImageResource(R.id.an)
+                        }
+                        mp.reset()
+                        mp = MediaPlayer.create(this@MainActivity, musicas_id[contador])
+                        mp.seekTo(0)
                         mp.start()
-                        Toast.makeText(applicationContext, "Play", Toast.LENGTH_LONG).show()
-                    }
-                } else if (matches[0] in pause) {
-                    if (mp.isPlaying()) {
-                        position = mp.getCurrentPosition()
-                        mp.pause()
-                        Toast.makeText(applicationContext, "Pause", Toast.LENGTH_LONG).show()
-                    }
-                } else if (matches[0] in volume_up) {
-                    val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
-                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND)
-                    Toast.makeText(applicationContext, "Volume up", Toast.LENGTH_LONG).show()
-                } else if (matches[0] in volume_down) {
-                    val audioManager = applicationContext.getSystemService(Context.AUDIO_SERVICE) as AudioManager
-                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
-                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND)
-                    Toast.makeText(applicationContext, "Volume down", Toast.LENGTH_LONG).show()
-                } else if (matches[0] in next) {
-                    contador++
-                    if (contador == musicas_id.size){
-                        contador = 0
-                    }
-                    Toast.makeText(applicationContext, contador.toString(), Toast.LENGTH_LONG).show()
-                    val mediaPath = Uri.parse("android.resource://" + packageName + "/" + musicas_id[contador])
-                    val mmr = MediaMetadataRetriever()
-                    mmr.setDataSource(applicationContext, mediaPath)
-                    val title = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE)
-                    val artist = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST)
+                        nome_musica.setText(title + " - " + artist)
 
-                    val image_array = mmr.embeddedPicture
-                    if (image_array != null){
-                        val imagem_bit = BitmapFactory.decodeByteArray(image_array, 0, image_array.size)
-                        capa_musica.setImageBitmap(imagem_bit)
-                        capa_musica.setColorFilter(Color.argb(0,255,255,255))
-                        capa_musica.adjustViewBounds = true
+                        Toast.makeText(applicationContext, "Next", Toast.LENGTH_LONG).show()
                     } else {
-                        //capa_musica.setImageResource(R.id.an)
+                        Toast.makeText(applicationContext, "Nenhum comando reconhecido", Toast.LENGTH_LONG).show()
                     }
-                    mp.reset()
-                    mp = MediaPlayer.create(this@MainActivity, musicas_id[contador])
-                    mp.seekTo(0)
-                    mp.start()
-                    nome_musica.setText(title + " - " + artist)
-
-                    Toast.makeText(applicationContext, "Next", Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(applicationContext, "Nenhum comando reconhecido", Toast.LENGTH_LONG).show()
                 }
             }
 
@@ -142,17 +159,18 @@ class MainActivity : AppCompatActivity() {
             override fun onEvent(i: Int, bundle: Bundle) {}
         })
 
-        btSpeech.setOnTouchListener(View.OnTouchListener { view, motionEvent ->
+        btSpeech.setOnTouchListener(View.OnTouchListener
+        { view, motionEvent ->
             when (motionEvent.action) {
                 MotionEvent.ACTION_UP -> {
                     speechRecognizer.stopListening()
-                    editText.hint = getString(R.string.text_hint)
+                    //editText.hint = getString(R.string.text_hint)
                 }
 
                 MotionEvent.ACTION_DOWN -> {
                     speechRecognizer.startListening(speechRecognizerIntent)
-                    editText.setText("")
-                    editText.hint = "Listening..."
+                    //editText.setText("")
+                    //editText.hint = "Listening..."
                 }
             }
             false
