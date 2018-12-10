@@ -66,7 +66,7 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
     private int contador = 0;
 
-    private final int[] resID = { R.raw.gaiola, R.raw.atrasadinha, R.raw.youngr,
+    private final int[] resID = { R.raw.hips_dont_lie, R.raw.atrasadinha, R.raw.youngr,
             R.raw.medicina, R.raw.amor_falso, R.raw.fuleragem, R.raw.taki_taki, R.raw.refem };
 
     private SensorManager mSensorManager;
