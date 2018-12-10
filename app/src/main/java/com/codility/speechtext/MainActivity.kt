@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     val volume_down = arrayOf("diminui", "baixo", "menos", "diminuir", "sussuro", "abaixa")
     val next = arrayOf("proxima", "próxima", "proxima_musica", "next", "passa")
     val previous = arrayOf("anterior", "previous")
-    val musicas_id = arrayListOf<Int>(R.raw.coldplay, R.raw.parado, R.raw.atrasadinha, R.raw.amor_falso, R.raw.gaiola)
+    //val musicas_id = arrayListOf<Int>(R.raw.coldplay, R.raw.parado, R.raw.atrasadinha, R.raw.amor_falso, R.raw.gaiola)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
