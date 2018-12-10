@@ -20,9 +20,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
@@ -41,9 +40,6 @@ import android.os.Build;
 import android.media.MediaPlayer;
 
 import com.example.android.architecture.blueprints.todoapp.R;
-import com.google.common.collect.Lists;
-
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -58,7 +54,8 @@ public class GestureFragment extends Fragment implements GestureContract.View {
 
     MediaPlayer mediaPlayer;
 
-    private TextView txtList;
+    private TextView txtListMusica;
+    private TextView txtListArtista;
     private ImageView coverart;
 
     private String sponsorTitle;
@@ -91,7 +88,8 @@ public class GestureFragment extends Fragment implements GestureContract.View {
         View root = inflater.inflate(R.layout.gesture_interface_frag, container, false);
         //mStatisticsTV = (TextView) root.findViewById(R.id.statistics);
 
-        txtList = (TextView)  root.findViewById(R.id.text_gesture);
+        txtListMusica = (TextView)  root.findViewById(R.id.text_musica);
+        txtListArtista = (TextView)  root.findViewById(R.id.text_artista);
         coverart = (ImageView) root.findViewById(R.id.imagem_gesto);
 
 
@@ -143,7 +141,9 @@ public class GestureFragment extends Fragment implements GestureContract.View {
                 mediaPlayer.reset();
                 mediaPlayer = MediaPlayer.create(getActivity().getApplicationContext(), resID[contador]);
                 mediaPlayer.start();
-                txtList.setText(sponsorTitle + " - " + sponsorArtist);
+                txtListMusica.setText(sponsorTitle);
+                txtListArtista.setTypeface(null, Typeface.BOLD);
+                txtListArtista.setText(sponsorArtist);
 
                 Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -183,7 +183,7 @@ public class GestureFragment extends Fragment implements GestureContract.View {
         mediaPlayer.start();
 
 
-        txtList.setText(sponsorTitle + " - " + sponsorArtist);
+        txtListMusica.setText(sponsorTitle + " - " + sponsorArtist);
 
         return root;
     }
@@ -193,7 +193,7 @@ public class GestureFragment extends Fragment implements GestureContract.View {
         super.onResume();
         mPresenter.start();
         mSensorManager.registerListener(mShakeDetector, mAccelerometer,	SensorManager.SENSOR_DELAY_UI);
-        txtList.setVisibility(View.VISIBLE);
+        txtListMusica.setVisibility(View.VISIBLE);
     }
 
 
